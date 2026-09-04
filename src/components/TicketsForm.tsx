@@ -13,7 +13,7 @@ interface Props {
   onSubmit: (ticket: Ticket) => void;
 }
 
-export default function TicketForm({ onSubmitted }: Props) {
+export default function TicketForm({ onSubmit }: Props) {
   const [form, setForm] = useState<NewTicketInput>(EMPTY);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -41,7 +41,7 @@ export default function TicketForm({ onSubmitted }: Props) {
     try {
       const ticket = await createTicket(form);
       setForm(EMPTY);
-      onSubmitted(ticket);
+      onSubmit(ticket);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Noe gikk galt. Prøv igjen.",

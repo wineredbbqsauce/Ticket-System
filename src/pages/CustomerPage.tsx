@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import TopBar from "../components/TopBar.tsx";
-import TicketForm from "../components/TicketForm.tsx";
+import TicketForm from "../components/TicketsForm.tsx";
 import type { Ticket } from "../api.ts";
 
 type Tab = "meld" | "folg";
@@ -67,7 +67,7 @@ export default function CustomerPage() {
                   Beskriv problemet, klagen eller spørsmålet ditt så hjelper vi
                   deg.
                 </p>
-                <TicketForm onSubmitted={setReceipt} />
+                <TicketForm onSubmit={setReceipt} />
               </>
             )}
           </div>

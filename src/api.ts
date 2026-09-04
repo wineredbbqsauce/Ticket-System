@@ -50,8 +50,6 @@ function delay(ms = 150): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-
-
 // POST /api/tickets
 export async function createTicket(input: NewTicketInput): Promise<Ticket> {
   await delay();
@@ -80,7 +78,7 @@ export async function employeeLogin(code: string): Promise<boolean> {
   return true;
 }
 
-export function isEmployeeloggedIn(): boolean {
+export function isEmployeeLoggedIn(): boolean {
   return sessionStorage.getItem("kundeservice_employee") === "1";
 }
 
@@ -92,22 +90,32 @@ export function employeeLogout(): void {
 export async function lookupTicket(id: string, email: string): Promise<Ticket> {
   await delay();
   const ticket = readAll().find(
-    (t) => t.id.toLowerCase() === id.trim().toLowerCase() && t.email.toLowerCase() === email.trim().toLowerCase()
+    (t) =>
+      t.id.toLowerCase() === id.trim().toLowerCase() &&
+      t.email.toLowerCase() === email.trim().toLowerCase(),
   );
-  if (!ticket) throw new Error
-  {
-    ("Fant ingen saker med denne kombinasjonen av saksnummer og e-post.");
+  if (!ticket) {
+    throw new Error(
+      "Fant ingen saker med denne kombinasjonen av saksnummer og e-post.",
+    );
   }
   return ticket;
 }
 
 // PATCH /api/ticets/:id
-export async function updateTicket(id: string, patch: Partial<Ticket>): Promise<Ticket> {
+export async function updateTicket(
+  id: string,
+  patch: Partial<Ticket>,
+): Promise<Ticket> {
   await delay();
   const tickets = readAll();
   const index = tickets.findIndex((t) => t.id === id);
   if (index === -1) throw new Error("Fant ikke saken.");
-  tickets[index] = { ...tickets[index], ...patch, updatedAt: new Date().toISOString() };
+  tickets[index] = {
+    ...tickets[index],
+    ...patch,
+    updatedAt: new Date().toISOString(),
+  };
   writeAll(tickets);
   return tickets[index];
 }
@@ -116,4 +124,12 @@ export async function updateTicket(id: string, patch: Partial<Ticket>): Promise<
 export async function deleteTicket(id: string): Promise<void> {
   await delay();
   writeAll(readAll().filter((t) => t.id !== id));
+}
+
+//GET /api/tickets - ansatt only i en ekte backend (ofc)
+export async function listTickets(): Promise<Ticket[]> {
+  await delay();
+  return readAll().sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+  );
 }
