@@ -36,6 +36,14 @@ export default function TicketLookup() {
     }
   }
 
+  function handleIdChange(value: string) {
+    if (/^\d+$/.test(value.trim())) {
+      setId(`SAK-${value.trim()}`);
+    } else {
+      setId(value);
+    }
+  }
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -46,7 +54,7 @@ export default function TicketLookup() {
               type="text"
               placeholder="SAK-1001"
               value={id}
-              onChange={(e) => setId(e.target.value)}
+              onChange={(e) => handleIdChange(e.target.value)}
             />
           </div>
           <div className="field">
