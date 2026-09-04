@@ -1,75 +1,72 @@
-# React + TypeScript + Vite
+# 🎧 Kundeservice
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A customer-service ticketing app with a customer-facing portal and a code-gated
+employee panel for managing support tickets.
 
-Currently, two official plugins are available:
+## 🛠️ Tech stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **TypeScript**
+- **React**
+- **Vite**
+- **React Router** for client-side routing
 
-## React Compiler
+## ✨ Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Customer portal (`/`)**
+- 📝 Submit a ticket (name, email, subject, type, description)
+- 🎫 Receive a ticket number (`SAK-XXXX`) as a receipt after submitting
+- 🔍 Look up an existing ticket's status by ticket number + email
 
-## Expanding the ESLint configuration
+**Employee panel (`/ansatt`, `/ansatt/panel`)**
+- 🔒 Code-gated login (see `EMPLOYEE_CODE` in `src/api.ts`)
+- 📊 Dashboard stats (total / open / in progress / solved)
+- 🔎 Search and filter tickets by status, priority, and type
+- 📋 Table view and drag-and-drop kanban board view
+- 🗂️ Ticket detail panel: change status/priority, assign, reply to the
+  customer, add an internal note (staff-only), or delete the ticket
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 📁 Project structure
 
 ```
-
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+src/
+  api.ts              # data layer — all "backend" calls go through here
+  App.tsx             # routes
+  main.tsx            # entry point
+  index.css           # global styles
+  pages/
+    CustomerPage.tsx
+    EmployeeLogin.tsx
+    EmployeePanel.tsx
+  components/
+    TopBar.tsx
+    TicketForm.tsx
+    TicketLookup.tsx
+    TicketTable.tsx
+    TicketBoard.tsx
+    TicketDrawer.tsx
+    StatCard.tsx
 ```
+
+## 🚀 Getting started
+
+```bash
+npm install
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## 🔌 Backend
+
+Data currently persists in the browser via `localStorage`/`sessionStorage`.
+All "server" interaction is isolated in `src/api.ts` — every exported
+function (`createTicket`, `listTickets`, `lookupTicket`, `updateTicket`,
+`deleteTicket`, `employeeLogin`, etc.) is written as an `async` function
+with the same shape a real API call would have. Swapping in a real backend
+means replacing the body of each function with a `fetch()` call to the
+matching endpoint (noted in a comment above each function) — no other file
+needs to change.
