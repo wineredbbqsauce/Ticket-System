@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { employeeLogin, isEmployeeLoggedIn } from "../api";
 
@@ -7,9 +7,11 @@ export default function EmployeeLogin() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  if (isEmployeeLoggedIn()) {
-    navigate("/anstatt/panel", { replace: true });
-  }
+  useEffect(() => {
+    if (isEmployeeLoggedIn()) {
+      navigate("/ansatt/panel", { replace: true });
+    }
+  }, [navigate]);
 
   // handleSubmit kommer kanskje
   async function handleSubmit(e: React.FormEvent) {

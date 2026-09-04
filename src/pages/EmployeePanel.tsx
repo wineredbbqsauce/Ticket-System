@@ -129,7 +129,7 @@ export default function EmployeePanel() {
           >
             <option>Alle statuser</option>
             <option>Åpen</option>
-            <option>Under arbeid</option>
+            <option>Under behandling</option>
             <option>Løst</option>
           </select>
           <select

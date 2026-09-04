@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import TopBar from "../components/TopBar.tsx";
 import TicketForm from "../components/TicketsForm.tsx";
 import type { Ticket } from "../api.ts";
+import TicketLookup from "../components/TicketLookup.tsx";
 
 type Tab = "meld" | "folg";
 
@@ -79,7 +80,7 @@ export default function CustomerPage() {
             <p className="lead">
               Slå opp status på en sak du allerede har sendt inn.
             </p>
-            {/* TicketLookup kommer her */}
+            <TicketLookup />
           </div>
         )}
       </div>
