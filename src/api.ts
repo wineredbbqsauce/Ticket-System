@@ -29,6 +29,7 @@ export interface NewTicketInput {
 const STORAGE_KEY = "tickets_tickets";
 const COUNTER_KEY = "tickets_counter";
 const EMPLOYEE_CODE = "1234"; // Hardcoded employee code for login
+const API_BASE = "";
 
 function readAll(): Ticket[] {
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -127,9 +128,16 @@ export async function deleteTicket(id: string): Promise<void> {
 }
 
 //GET /api/tickets - ansatt only i en ekte backend (ofc)
+// export async function listTickets(): Promise<Ticket[]> {
+//   await delay();
+//   return readAll().sort(
+//     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+//   );
+// }
+
+//GET /api/tickets
 export async function listTickets(): Promise<Ticket[]> {
-  await delay();
-  return readAll().sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  );
+  const res = await fetch(`${API_BASE}/api/tickets`);
+  if (!res.ok) throw new Error("Klarte ikke hente saker");
+  return res.json();
 }
